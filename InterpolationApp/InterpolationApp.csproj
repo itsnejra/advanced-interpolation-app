@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <AssemblyName>InterpolationApp</AssemblyName>
+    <RootNamespace>InterpolationApp</RootNamespace>
+    <StartupObject>InterpolationApp.App</StartupObject>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+    <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+    <PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
+  </ItemGroup>
+
+  <!-- Exclude backup XAML files from build -->
+  <ItemGroup>
+    <Page Remove="Views\AudioProcessing_Modern_BACKUP.xaml" />
+    <Page Remove="Views\MainWindow_ORIGINAL_BACKUP.xaml" />
+    <None Include="Views\AudioProcessing_Modern_BACKUP.xaml" />
+    <None Include="Views\MainWindow_ORIGINAL_BACKUP.xaml" />
+  </ItemGroup>
+
+
+
+</Project>

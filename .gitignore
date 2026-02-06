@@ -1,0 +1,56 @@
+## Visual Studio
+.vs/
+.vscode/
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
+
+## User-specific files
+*.suo
+*.user
+*.userosscache
+
+## NuGet Packages
+*.nupkg
+packages/
+*.nuget.props
+*.nuget.targets
+
+## Audio test files (generated)
+*.wav
+*.mp3
+*.flac
+*.aiff
+
+## Exported data
+*.csv
+*.png
+
+## Ignore deployment scripts (internal use only)
+deploy-to-github.bat
+QUICK-PUSH.bat
+FORCE-PUSH.bat
+SYNC-AND-PUSH.bat
+CLEANUP-REPO.bat
+SETUP-GIT-CREDENTIALS.bat
+GITHUB-DEPLOY-GUIDE.md
+
+## Ignore internal documentation
+BUILD_AND_RUN.bat
+BUILD_ONLY.bat
+INSTALL.txt
+START_HERE.txt
+NEXT_STEPS.txt
+FINAL_INSTRUCTIONS.txt
+QUICK_START.txt
+PROJECT_STRUCTURE.txt
+UPGRADE_GUIDE.txt
+QUICK_FIX.txt
+AUDIO_TESTING_GUIDE.txt
+
+## Keep: GENERATE_TEST_AUDIO.bat (for users)

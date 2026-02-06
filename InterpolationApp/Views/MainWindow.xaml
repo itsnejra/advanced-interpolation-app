@@ -1,0 +1,1323 @@
+<Window x:Class="InterpolationApp.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:vm="clr-namespace:InterpolationApp.ViewModels"
+        Title="Advanced Interpolation Suite - Master Thesis" 
+        Height="900" Width="1600"
+        Background="#FAFAFA"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
+
+    <!-- DataContext set in code-behind -->
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- ELEGANT HEADER -->
+        <materialDesign:ColorZone Grid.Row="0" Mode="PrimaryMid" Padding="24,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <materialDesign:PackIcon Kind="ChartLine" Width="36" Height="36" 
+                                           VerticalAlignment="Center" Margin="0,0,16,0"/>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="Advanced Interpolation Suite" 
+                                 FontSize="22" FontWeight="SemiBold"/>
+                        <TextBlock Text="Numerička Analiza - Master Studij" 
+                                 FontSize="12" Opacity="0.85"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <materialDesign:Chip Content="v2.0 Professional" Margin="8,0"
+                                        Background="#1A237E" Foreground="White"/>
+                </StackPanel>
+            </Grid>
+        </materialDesign:ColorZone>
+
+        <!-- MAIN CONTENT - TABBED INTERFACE -->
+        <Grid Grid.Row="1" Margin="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <!-- LEFT: Vertical Tab Navigation -->
+            <Border Grid.Column="0" Background="#3F51B5">
+                <StackPanel Margin="0,16">
+                    <RadioButton x:Name="TabManual" GroupName="MainTabs" IsChecked="True"
+                                Margin="0" Height="64" Padding="16,12">
+                        <RadioButton.Style>
+                            <Style TargetType="RadioButton">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="RadioButton">
+                                            <Border x:Name="border" Background="Transparent" 
+                                                   BorderThickness="0" Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter HorizontalAlignment="Left" 
+                                                                VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="border" Property="Background" Value="#303F9F"/>
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="border" Property="Background" Value="#3949AB"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </RadioButton.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="HandPointingUp" Width="24" Height="24" 
+                                                   Margin="0,0,12,0" VerticalAlignment="Center"
+                                                   Foreground="White"/>
+                            <TextBlock Text="Manual Input" FontSize="14" VerticalAlignment="Center"
+                                     Foreground="White" FontWeight="Medium"/>
+                        </StackPanel>
+                    </RadioButton>
+                    
+                    <RadioButton x:Name="TabFunction" GroupName="MainTabs"
+                                Margin="0" Height="64" Padding="16,12">
+                        <RadioButton.Style>
+                            <Style TargetType="RadioButton">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="RadioButton">
+                                            <Border x:Name="border" Background="Transparent" 
+                                                   BorderThickness="0" Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter HorizontalAlignment="Left" 
+                                                                VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="border" Property="Background" Value="#303F9F"/>
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="border" Property="Background" Value="#3949AB"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </RadioButton.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="FunctionVariant" Width="24" Height="24" 
+                                                   Margin="0,0,12,0" VerticalAlignment="Center"
+                                                   Foreground="White"/>
+                            <TextBlock Text="Function Sampling" FontSize="14" VerticalAlignment="Center"
+                                     Foreground="White" FontWeight="Medium"/>
+                        </StackPanel>
+                    </RadioButton>
+                    
+                    <RadioButton x:Name="TabDegree" GroupName="MainTabs"
+                                Margin="0" Height="64" Padding="16,12">
+                        <RadioButton.Style>
+                            <Style TargetType="RadioButton">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="RadioButton">
+                                            <Border x:Name="border" Background="Transparent" 
+                                                   BorderThickness="0" Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter HorizontalAlignment="Left" 
+                                                                VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="border" Property="Background" Value="#303F9F"/>
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="border" Property="Background" Value="#3949AB"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </RadioButton.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ChartLineVariant" Width="24" Height="24" 
+                                                   Margin="0,0,12,0" VerticalAlignment="Center"
+                                                   Foreground="White"/>
+                            <TextBlock Text="Degree Optimizer" FontSize="14" VerticalAlignment="Center"
+                                     Foreground="White" FontWeight="Medium"/>
+                        </StackPanel>
+                    </RadioButton>
+                    
+                    <RadioButton x:Name="TabAudio" GroupName="MainTabs"
+                                Margin="0" Height="64" Padding="16,12">
+                        <RadioButton.Style>
+                            <Style TargetType="RadioButton">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="RadioButton">
+                                            <Border x:Name="border" Background="Transparent" 
+                                                   BorderThickness="0" Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter HorizontalAlignment="Left" 
+                                                                VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter TargetName="border" Property="Background" Value="#303F9F"/>
+                                                </Trigger>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="border" Property="Background" Value="#3949AB"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </RadioButton.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Waveform" Width="24" Height="24" 
+                                                   Margin="0,0,12,0" VerticalAlignment="Center"
+                                                   Foreground="White"/>
+                            <TextBlock Text="Audio Processing" FontSize="14" VerticalAlignment="Center"
+                                     Foreground="White" FontWeight="Medium"/>
+                        </StackPanel>
+                    </RadioButton>
+                </StackPanel>
+            </Border>
+            
+            <!-- RIGHT: Content Area -->
+            <Border Grid.Column="1" Background="White" 
+                   BorderBrush="#E0E0E0" BorderThickness="1,1,1,1">
+                <Grid>
+                    <!-- Content panels controlled by RadioButtons -->
+
+                    <!-- PANEL 1: MANUAL INPUT -->
+                    <Grid Visibility="{Binding IsChecked, ElementName=TabManual, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                <Grid Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="320"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="320"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- LEFT: Data Input -->
+                    <materialDesign:Card Grid.Column="0" Style="{StaticResource ElegantCard}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <TextBlock Text="Data Points" Style="{StaticResource SectionHeader}"/>
+
+                                <!-- Data Grid -->
+                                <DataGrid ItemsSource="{Binding DataPoints}" 
+                                         Height="300" Margin="0,0,0,12"
+                                         AutoGenerateColumns="False"
+                                         CanUserAddRows="False"
+                                         SelectionMode="Single"
+                                         ColumnWidth="*">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="X" Binding="{Binding X}" Width="1*"/>
+                                        <DataGridTextColumn Header="Y" Binding="{Binding Y, StringFormat='{}{0:F6}'}" Width="2*">
+                                            <DataGridTextColumn.ElementStyle>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="TextWrapping" Value="NoWrap"/>
+                                                    <Setter Property="TextTrimming" Value="None"/>
+                                                    <Setter Property="ToolTip" Value="{Binding Y, StringFormat='{}{0:F10}'}"/>
+                                                </Style>
+                                            </DataGridTextColumn.ElementStyle>
+                                        </DataGridTextColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+
+                                <!-- Manual Input for X and Y -->
+                                <TextBlock Text="Add New Point" Style="{StaticResource SubHeader}"/>
+                                <Grid Margin="8,4,8,8">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="8"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBox Grid.Column="0" 
+                                            Text="{Binding InputXText, UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource ElegantTextBox}"
+                                            materialDesign:HintAssist.Hint="X value (use . or ,)"/>
+                                    
+                                    <TextBox Grid.Column="2" 
+                                            Text="{Binding InputYText, UpdateSourceTrigger=PropertyChanged}"
+                                            Style="{StaticResource ElegantTextBox}"
+                                            materialDesign:HintAssist.Hint="Y value (use . or ,)"/>
+                                </Grid>
+
+                                <!-- Data Controls -->
+                                <UniformGrid Columns="2" Margin="0,0,0,12">
+                                    <Button Content="Add Point" Command="{Binding AddDataPointCommand}"
+                                           Style="{StaticResource SecondaryButton}"/>
+                                    <Button Content="Remove Last" Command="{Binding RemoveLastPointCommand}"
+                                           Style="{StaticResource SecondaryButton}"/>
+                                </UniformGrid>
+
+                                <Button Content="Load Sample Data" Command="{Binding AddSampleDataCommand}"
+                                       Style="{StaticResource SecondaryButton}" Margin="0,0,0,8"/>
+                                <Button Content="Generate Random" Command="{Binding GenerateRandomDataCommand}"
+                                       Style="{StaticResource SecondaryButton}" Margin="0,0,0,8"/>
+                                <Button Content="Clear All" Command="{Binding ClearPointsCommand}"
+                                       Style="{StaticResource SecondaryButton}"/>
+
+                                <Separator Margin="0,16"/>
+
+                                <!-- Algorithm Selection -->
+                                <TextBlock Text="Algorithm" Style="{StaticResource SubHeader}"/>
+                                <ComboBox ItemsSource="{Binding AvailableAlgorithms}"
+                                         SelectedItem="{Binding SelectedAlgorithm}"
+                                         Style="{StaticResource ElegantComboBox}"/>
+
+                                <!-- Interpolation Points -->
+                                <TextBlock Text="Interpolation Points" Style="{StaticResource SubHeader}" Margin="0,20,0,0"/>
+                                <Grid Margin="8,8,8,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Slider Value="{Binding InterpolationPointsCount}" 
+                                           Minimum="50" Maximum="1000" 
+                                           TickFrequency="50"
+                                           Style="{StaticResource ElegantSlider}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding InterpolationPointsCount}"
+                                             Margin="12,0,0,0" VerticalAlignment="Center"
+                                             FontWeight="SemiBold" FontSize="14"/>
+                                </Grid>
+
+                                <Separator Margin="0,16"/>
+
+                                <!-- Action Buttons -->
+                                <Button Content="INTERPOLATE" Command="{Binding InterpolateCommand}"
+                                       Style="{StaticResource PrimaryButton}" 
+                                       Background="#4CAF50" BorderBrush="#4CAF50"
+                                       Margin="0,0,0,8"/>
+                                <Button Content="COMPARE ALL" Command="{Binding CompareAlgorithmsCommand}"
+                                       Style="{StaticResource PrimaryButton}"
+                                       Background="#FF9800" BorderBrush="#FF9800"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </materialDesign:Card>
+
+                    <!-- CENTER: Plot -->
+                    <materialDesign:Card Grid.Column="1" Margin="16,0" Style="{StaticResource ElegantCard}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Text="Interpolation Visualization" 
+                                     Style="{StaticResource SectionHeader}"/>
+                            
+                            <oxy:PlotView Grid.Row="1" Model="{Binding PlotModel}" 
+                                        Background="White">
+                                <oxy:PlotView.DefaultTrackerTemplate>
+                                    <ControlTemplate>
+                                        <oxy:TrackerControl Position="{Binding Position}" 
+                                                          LineExtents="{Binding PlotModel.PlotArea}"
+                                                          Background="#F5FFFFFF"
+                                                          BorderBrush="#3F51B5"
+                                                          BorderThickness="2"
+                                                          CornerRadius="6"
+                                                          Padding="12,8"
+                                                          Distance="15">
+                                            <oxy:TrackerControl.Content>
+                                                <TextBlock Text="{Binding}" 
+                                                         FontWeight="SemiBold"
+                                                         FontSize="13"
+                                                         Foreground="#1A237E"/>
+                                            </oxy:TrackerControl.Content>
+                                        </oxy:TrackerControl>
+                                    </ControlTemplate>
+                                </oxy:PlotView.DefaultTrackerTemplate>
+                            </oxy:PlotView>
+                        </Grid>
+                    </materialDesign:Card>
+
+                    <!-- RIGHT: Results & Evaluation -->
+                    <materialDesign:Card Grid.Column="2" Style="{StaticResource ElegantCard}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <!-- EVALUATE AT POINT PANEL -->
+                                <TextBlock Text="Evaluate at Point" Style="{StaticResource SectionHeader}"/>
+                                <Border Background="#E8F5E9" Padding="12" Margin="0,0,0,12">
+                                    <StackPanel>
+                                        <TextBlock Text="Calculate Y value for specific X" FontSize="11" Foreground="#666" Margin="0,0,0,8"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBox Grid.Column="0" 
+                                                    Text="{Binding EvaluateXText, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{StaticResource ElegantTextBox}"
+                                                    materialDesign:HintAssist.Hint="X value (use . or ,)"
+                                                    Margin="0,0,8,0"/>
+                                            <Button Grid.Column="1" 
+                                                   Content="Calculate" 
+                                                   Command="{Binding EvaluateAtPointCommand}"
+                                                   Style="{StaticResource PrimaryButton}"
+                                                   Background="#2E7D32" BorderBrush="#2E7D32"
+                                                   Padding="12,8" MinWidth="100"/>
+                                        </Grid>
+                                        
+                                        <!-- Results of evaluation -->
+                                        <ItemsControl ItemsSource="{Binding EvaluatedResults}" Margin="0,12,0,0">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Background="White" Padding="8" Margin="0,0,0,4"
+                                                           BorderBrush="#C8E6C9" BorderThickness="1">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="{Binding AlgorithmName}" 
+                                                                     FontSize="11" FontWeight="Medium" VerticalAlignment="Center"/>
+                                                            <TextBlock Grid.Column="1" Text="{Binding FormattedResult}" 
+                                                                     FontFamily="Consolas" FontSize="11" FontWeight="SemiBold" 
+                                                                     VerticalAlignment="Center" Foreground="#1B5E20"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+
+                                <Separator Margin="0,0,0,16"/>
+
+                                <TextBlock Text="Results" Style="{StaticResource SectionHeader}"/>
+
+                                <ItemsControl ItemsSource="{Binding Results}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="#F5F5F5" 
+                                                   Padding="12" Margin="0,0,0,8"
+                                                   BorderBrush="#E0E0E0" BorderThickness="1">
+                                                <StackPanel>
+                                                    <!-- Header with Algorithm Name and Visibility Toggle -->
+                                                    <Grid Margin="0,0,0,8">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Grid.Column="0" Text="{Binding AlgorithmName}" 
+                                                                 FontWeight="SemiBold" FontSize="14"
+                                                                 Foreground="#283593" VerticalAlignment="Center"/>
+                                                        <CheckBox Grid.Column="1" 
+                                                                 IsChecked="{Binding IsVisible}"
+                                                                 Content="Show" 
+                                                                 FontSize="11"
+                                                                 VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                    
+                                                    <!-- Metrics -->
+                                                    <Grid Margin="0,0,0,8">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        
+                                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="RMSE:" Margin="0,0,8,4" FontSize="11"/>
+                                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding RMSError, StringFormat='{}{0:F6}'}" FontWeight="Medium" FontSize="11"/>
+                                                        
+                                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="Max Error:" Margin="0,0,8,4" FontSize="11"/>
+                                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding MaxError, StringFormat='{}{0:F6}'}" FontWeight="Medium" FontSize="11"/>
+                                                        
+                                                        <TextBlock Grid.Row="2" Grid.Column="0" Text="Time:" Margin="0,0,8,4" FontSize="11"/>
+                                                        <TextBlock Grid.Row="2" Grid.Column="1" FontWeight="Medium" FontSize="11">
+                                                            <TextBlock.Text>
+                                                                <Binding Path="ComputationTime" Converter="{StaticResource TimeSpanToMillisecondsConverter}" StringFormat="{}{0:F2} ms"/>
+                                                            </TextBlock.Text>
+                                                        </TextBlock>
+                                                    </Grid>
+                                                    
+                                                    <!-- Polynomial Equation (if available) -->
+                                                    <Border Background="#FFF9C4" Padding="8" 
+                                                    Visibility="{Binding PolynomialEquation, Converter={StaticResource StringToVisibilityConverter}}">
+                                                    <StackPanel>
+                                                    <TextBlock Text="Equation:" FontSize="10" FontWeight="Medium" Margin="0,0,0,4"/>
+                                                    <!-- Scrollable polynomial display -->
+                                                    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                                                        VerticalScrollBarVisibility="Disabled"
+                                                                     MaxHeight="60">
+                                                                <TextBlock Text="{Binding PolynomialEquation}" 
+                                                         FontFamily="Consolas" FontSize="10" 
+                                                         TextWrapping="NoWrap" Foreground="#F57F17"
+                                                         Padding="4,2"/>
+                                            </ScrollViewer>
+                                            <TextBlock Text="💡 Scroll horizontally to see full equation" 
+                                                     FontSize="9" Foreground="#666" 
+                                                     Margin="0,4,0,0" FontStyle="Italic"/>
+                                        </StackPanel>
+                                    </Border>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <Separator Margin="0,16"/>
+
+                                <!-- Export -->
+                                <TextBlock Text="Export" Style="{StaticResource SubHeader}"/>
+                                <Button Content="Export Data (CSV)" Command="{Binding ExportDataCommand}"
+                                       Style="{StaticResource SecondaryButton}" Margin="0,0,0,8"/>
+                                <Button Content="Export Plot (PNG)" Command="{Binding ExportPlotCommand}"
+                                       Style="{StaticResource SecondaryButton}"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </materialDesign:Card>
+                </Grid>
+            </Grid>
+
+                    <!-- PANEL 2: FUNCTION SAMPLING -->
+                    <Grid Visibility="{Binding IsChecked, ElementName=TabFunction, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                <Grid Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="400"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="350"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- LEFT: Function Parameters -->
+                    <materialDesign:Card Grid.Column="0" Style="{StaticResource ElegantCard}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <TextBlock Text="Function Configuration" Style="{StaticResource SectionHeader}"/>
+
+                                <!-- Function Expression -->
+                                <TextBlock Text="Function f(x)" Style="{StaticResource SubHeader}"/>
+                                <TextBox Text="{Binding FunctionExpression, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource ElegantTextBox}"
+                                        materialDesign:HintAssist.Hint="e.g., sin(x), x*x, sqrt(x)"
+                                        FontFamily="Consolas" FontSize="14"/>
+
+                                <TextBlock TextWrapping="Wrap" FontSize="11" Foreground="#555" Margin="12,4,12,12">
+                                    <Run Text="✓ Supported: " FontWeight="SemiBold"/>
+                                    <Run Text="sin(x), cos(x), tan(x), exp(x), log(x), sqrt(x), abs(x)"/>
+                                    <LineBreak/>
+                                    <Run Text="✓ Examples: " FontWeight="SemiBold"/>
+                                    <Run Text="x*x + 2*x + 1, sin(x)*cos(x), exp(-x*x), 1/(1+25*x*x)"/>
+                                    <LineBreak/>
+                                    <Run Text="✓ Constants: " FontWeight="SemiBold"/>
+                                    <Run Text="pi = 3.14159..., e = 2.71828..."/>
+                                </TextBlock>
+
+                                <!-- Interval -->
+                                <TextBlock Text="Interval [xMin, xMax]" Style="{StaticResource SubHeader}"/>
+                                <Grid Margin="8,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBox Grid.Column="0" Text="{Binding XMinText, UpdateSourceTrigger=PropertyChanged}"
+                                            materialDesign:HintAssist.Hint="xMin (use . or ,)"
+                                            Style="{StaticResource ElegantTextBox}"/>
+                                    <TextBlock Grid.Column="1" Text="to" Margin="8,0" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Text="{Binding XMaxText, UpdateSourceTrigger=PropertyChanged}"
+                                            materialDesign:HintAssist.Hint="xMax (use . or ,)"
+                                            Style="{StaticResource ElegantTextBox}"/>
+                                </Grid>
+
+                                <!-- Polynomial Degree -->
+                                <TextBlock Text="Polynomial Degree (n)" Style="{StaticResource SubHeader}" Margin="0,20,0,0"/>
+                                <Grid Margin="8,8,8,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Slider Grid.Column="0" Value="{Binding PolynomialDegree}" 
+                                           Minimum="2" Maximum="30" 
+                                           TickFrequency="1" IsSnapToTickEnabled="True"
+                                           Style="{StaticResource ElegantSlider}"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding PolynomialDegree}"
+                                             Margin="12,0,0,0" VerticalAlignment="Center"
+                                             FontWeight="SemiBold" FontSize="16"/>
+                                </Grid>
+
+                                <!-- Sampling Method -->
+                                <TextBlock Text="Sampling Method" Style="{StaticResource SubHeader}"/>
+                                <CheckBox Content="Use Chebyshev Nodes (recommended for Runge's phenomenon)" 
+                                IsChecked="{Binding UseChebyshevNodes}"
+                                Margin="8,4,8,12"/>
+
+                                <!-- Test Points -->
+                                <TextBlock Text="Test Points (for error calculation)" Style="{StaticResource SubHeader}"/>
+                                <TextBox Text="{Binding TestPointsCountText, UpdateSourceTrigger=PropertyChanged}" 
+                                        Style="{StaticResource ElegantTextBox}"
+                                        materialDesign:HintAssist.Hint="Default: 1000"/>
+
+                                <Separator Margin="0,16"/>
+
+                                <!-- Action Button -->
+                                <Button Content="GENERATE &amp; INTERPOLATE" 
+                                       Command="{Binding GenerateSamplesCommand}"
+                                       Style="{StaticResource PrimaryButton}"
+                                       Background="#2196F3" BorderBrush="#2196F3"
+                                       Height="48" FontSize="14"/>
+
+                                <TextBlock Text="This will sample the function, apply all interpolation algorithms, and display results with error analysis."
+                                         TextWrapping="Wrap" FontSize="11" Foreground="Gray" Margin="12,8"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </materialDesign:Card>
+
+                    <!-- CENTER: Plot with Real Function -->
+                    <materialDesign:Card Grid.Column="1" Margin="16,0" Style="{StaticResource ElegantCard}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <StackPanel Grid.Row="0">
+                                <TextBlock Text="Function vs Interpolations" Style="{StaticResource SectionHeader}"/>
+                                <TextBlock Text="Red = Real Function | Colors = Interpolation Methods"
+                                         FontSize="11" Foreground="Gray" Margin="0,0,0,8"/>
+                            </StackPanel>
+                            
+                            <oxy:PlotView Grid.Row="1" Model="{Binding FunctionPlotModel}" 
+                                        Background="White">
+                                <oxy:PlotView.DefaultTrackerTemplate>
+                                    <ControlTemplate>
+                                        <oxy:TrackerControl Position="{Binding Position}" 
+                                                          LineExtents="{Binding PlotModel.PlotArea}"
+                                                          Background="#F5FFFFFF"
+                                                          BorderBrush="#2196F3"
+                                                          BorderThickness="2"
+                                                          CornerRadius="6"
+                                                          Padding="12,8"
+                                                          Distance="15">
+                                            <oxy:TrackerControl.Content>
+                                                <TextBlock Text="{Binding}" 
+                                                         FontWeight="SemiBold"
+                                                         FontSize="13"
+                                                         Foreground="#0D47A1"/>
+                                            </oxy:TrackerControl.Content>
+                                        </oxy:TrackerControl>
+                                    </ControlTemplate>
+                                </oxy:PlotView.DefaultTrackerTemplate>
+                            </oxy:PlotView>
+                        </Grid>
+                    </materialDesign:Card>
+
+                    <!-- RIGHT: Error Analysis -->
+                    <materialDesign:Card Grid.Column="2" Style="{StaticResource ElegantCard}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <TextBlock Text="Error Analysis" Style="{StaticResource SectionHeader}"/>
+
+                                <Border Background="#E3F2FD" Padding="12" Margin="0,0,0,12">
+                                    <StackPanel>
+                                        <TextBlock Text="Function:" FontWeight="Medium" FontSize="12"/>
+                                        <TextBlock Text="{Binding FunctionExpression}" 
+                                                 FontFamily="Consolas" FontSize="13" Margin="0,4"/>
+                                        <TextBlock FontSize="12" Margin="0,4">
+                                            <Run Text="Interval: ["/>
+                                            <Run Text="{Binding XMinText}"/>
+                                            <Run Text=", "/>
+                                            <Run Text="{Binding XMaxText}"/>
+                                            <Run Text="]"/>
+                                        </TextBlock>
+                                        <TextBlock FontSize="12">
+                                            <Run Text="Degree: n = "/>
+                                            <Run Text="{Binding PolynomialDegree}" FontWeight="SemiBold"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+
+                                <TextBlock Text="Algorithm Comparison" Style="{StaticResource SubHeader}"/>
+                                
+                                <ItemsControl ItemsSource="{Binding Results}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="White" 
+                                                   Padding="12" Margin="0,0,0,8"
+                                                   BorderBrush="#E0E0E0" BorderThickness="1">
+                                                <StackPanel>
+                                                    <!-- Header with Algorithm Name and Visibility Toggle -->
+                                                    <Grid Margin="0,0,0,8">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Grid.Column="0" Text="{Binding AlgorithmName}" 
+                                                                 FontWeight="SemiBold" FontSize="13"
+                                                                 Foreground="#1976D2" VerticalAlignment="Center"/>
+                                                        <CheckBox Grid.Column="1" 
+                                                                 IsChecked="{Binding IsVisible}"
+                                                                 Content="Show" 
+                                                                 FontSize="11"
+                                                                 VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                    
+                                                    <!-- Metrics -->
+                                                    <Grid Margin="0,0,0,0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                            <ColumnDefinition Width="*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+                                                        
+                                                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Max Error:" FontSize="11" Margin="0,0,8,3"/>
+                                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding MaxError, StringFormat='{}{0:E4}'}" 
+                                                                 FontWeight="Medium" FontSize="11"/>
+                                                        
+                                                        <TextBlock Grid.Row="1" Grid.Column="0" Text="RMSE:" FontSize="11" Margin="0,0,8,0"/>
+                                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding RMSError, StringFormat='{}{0:E4}'}" 
+                                                                 FontWeight="Medium" FontSize="11"/>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </materialDesign:Card>
+                </Grid>
+            </Grid>
+
+                    <!-- PANEL 3: DEGREE OPTIMIZER -->
+                    <Grid Visibility="{Binding IsChecked, ElementName=TabDegree, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                <Grid Margin="16">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="380"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="400"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- LEFT: Configuration -->
+                    <materialDesign:Card Grid.Column="0" Style="{StaticResource ElegantCard}">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <TextBlock Text="Optimizer Configuration" Style="{StaticResource SectionHeader}"/>
+
+                                <!-- Function -->
+                                <TextBlock Text="Function f(x)" Style="{StaticResource SubHeader}"/>
+                                <TextBox Text="{Binding FunctionExpression, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource ElegantTextBox}"
+                                        materialDesign:HintAssist.Hint="e.g., 1/(1+25*x*x)"
+                                        FontFamily="Consolas" FontSize="14"/>
+
+                                <!-- Interval -->
+                                <TextBlock Text="Interval [xMin, xMax]" Style="{StaticResource SubHeader}"/>
+                                <Grid Margin="8,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBox Grid.Column="0" Text="{Binding XMinText, UpdateSourceTrigger=PropertyChanged}"
+                                            materialDesign:HintAssist.Hint="xMin (use . or ,)"
+                                            Style="{StaticResource ElegantTextBox}"/>
+                                    <TextBlock Grid.Column="1" Text="to" Margin="8,0" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Text="{Binding XMaxText, UpdateSourceTrigger=PropertyChanged}"
+                                            materialDesign:HintAssist.Hint="xMax (use . or ,)"
+                                            Style="{StaticResource ElegantTextBox}"/>
+                                </Grid>
+
+                                <!-- Target Error -->
+                                <TextBlock Text="Target Maximum Error (ε)" Style="{StaticResource SubHeader}"/>
+                                <TextBox Text="{Binding TargetErrorText, UpdateSourceTrigger=PropertyChanged}"
+                                        Style="{StaticResource ElegantTextBox}"
+                                        materialDesign:HintAssist.Hint="e.g., 0.001 or 0,001"/>
+
+                                <!-- Degree Range -->
+                                <TextBlock Text="Search Range" Style="{StaticResource SubHeader}"/>
+                                <Grid Margin="8,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <TextBox Grid.Column="0" Text="{Binding MinDegreeText, UpdateSourceTrigger=PropertyChanged}"
+                                            materialDesign:HintAssist.Hint="Min n"
+                                            Style="{StaticResource ElegantTextBox}"/>
+                                    <TextBlock Grid.Column="1" Text="to" Margin="8,0" VerticalAlignment="Center"/>
+                                    <TextBox Grid.Column="2" Text="{Binding MaxDegreeText, UpdateSourceTrigger=PropertyChanged}"
+                                            materialDesign:HintAssist.Hint="Max n"
+                                            Style="{StaticResource ElegantTextBox}"/>
+                                </Grid>
+
+                                <!-- Algorithm Selection -->
+                                <TextBlock Text="Interpolation Algorithm" Style="{StaticResource SubHeader}"/>
+                                <ComboBox ItemsSource="{Binding AvailableAlgorithms}"
+                                         SelectedItem="{Binding SelectedAlgorithm}"
+                                         Style="{StaticResource ElegantComboBox}"/>
+
+                                <Separator Margin="0,16"/>
+
+                                <!-- Action Button -->
+                                <Button Content="FIND MINIMUM DEGREE" 
+                                       Command="{Binding FindMinDegreeCommand}"
+                                       Style="{StaticResource PrimaryButton}"
+                                       Background="#9C27B0" BorderBrush="#9C27B0"
+                                       Height="48" FontSize="14"/>
+
+                                <TextBlock Text="Finds the minimum polynomial degree n that achieves the target error."
+                                         TextWrapping="Wrap" FontSize="11" Foreground="Gray" Margin="12,8"/>
+
+                                <!-- Result Display -->
+                                <Border Background="#E8EAF6" Padding="16" Margin="0,16,0,0"
+                                       Visibility="{Binding OptimizerResult, Converter={StaticResource NullToVisibilityConverter}}">
+                                    <StackPanel>
+                                        <TextBlock Text="🎯 Optimization Result" FontWeight="SemiBold" FontSize="14" Margin="0,0,0,8"/>
+                                        <TextBlock FontSize="20" FontWeight="Bold" Foreground="#5C6BC0" Margin="0,0,0,4">
+                                            <Run Text="n_min = "/>
+                                            <Run Text="{Binding OptimalDegree}"/>
+                                        </TextBlock>
+                                        <TextBlock FontSize="12" Foreground="#424242">
+                                            <Run Text="Achieved Error: "/>
+                                            <Run Text="{Binding ActualError, StringFormat='{}{0:E6}'}" FontWeight="SemiBold"/>
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </materialDesign:Card>
+
+                    <!-- CENTER: Error vs Degree Graph -->
+                    <materialDesign:Card Grid.Column="1" Margin="16,0" Style="{StaticResource ElegantCard}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Text="Error vs Polynomial Degree" 
+                                     Style="{StaticResource SectionHeader}"/>
+                            
+                            <oxy:PlotView Grid.Row="1" Model="{Binding ErrorPlotModel}" 
+                                        Background="White"/>
+                        </Grid>
+                    </materialDesign:Card>
+
+                    <!-- RIGHT: Results Table -->
+                    <materialDesign:Card Grid.Column="2" Style="{StaticResource ElegantCard}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            
+                            <TextBlock Grid.Row="0" Text="Analysis Results" Style="{StaticResource SectionHeader}"/>
+                            
+                            <DataGrid Grid.Row="1" ItemsSource="{Binding DegreeAnalysisResults}"
+                                     AutoGenerateColumns="False"
+                                     IsReadOnly="True"
+                                     Background="White"
+                                     BorderBrush="#E0E0E0" BorderThickness="1"
+                                     GridLinesVisibility="Horizontal"
+                                     HeadersVisibility="Column">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="n" Binding="{Binding Degree}" Width="60"/>
+                                    <DataGridTextColumn Header="Max Error" Binding="{Binding MaxError, StringFormat='{}{0:E4}'}" Width="*"/>
+                                    <DataGridTextColumn Header="Avg Error" Binding="{Binding AvgError, StringFormat='{}{0:E4}'}" Width="*"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Grid>
+                    </materialDesign:Card>
+                </Grid>
+            </Grid>
+
+                    <!-- PANEL 4: AUDIO PROCESSING -->
+                    <Grid Visibility="{Binding IsChecked, ElementName=TabAudio, Converter={StaticResource BooleanToVisibilityConverter}}">
+
+                <Grid Margin="16">
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="450"/>
+        <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    <!-- LEFT: Modern Controls with Visual Hierarchy -->
+    <materialDesign:Card Grid.Column="0" Style="{StaticResource ElegantCard}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Hero Header with Gradient -->
+                <Border Background="#00BCD4" Padding="20,24">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <materialDesign:PackIcon Kind="Waveform" Width="32" Height="32" 
+                                                   VerticalAlignment="Center" Margin="0,0,12,0"
+                                                   Foreground="White"/>
+                            <TextBlock Text="Audio Noise Removal" 
+                                     FontSize="20" FontWeight="SemiBold" 
+                                     Foreground="White" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <TextBlock Text="Remove noise spikes using interpolation algorithms" 
+                                 FontSize="12" Foreground="White" Opacity="0.9"/>
+                    </StackPanel>
+                </Border>
+
+                <StackPanel>
+                    <!-- File Status Card -->
+                    <Border Background="#E8F5E9" Padding="16" Margin="0,0,0,20">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Icon -->
+                            <materialDesign:PackIcon Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                                   Kind="FileMusic" Width="40" Height="40" 
+                                                   VerticalAlignment="Center" Margin="0,0,16,0"
+                                                   Foreground="#4CAF50"/>
+                            
+                            <!-- File Info -->
+                            <TextBlock Grid.Row="0" Grid.Column="1" 
+                                     Text="Loaded File" 
+                                     FontWeight="Medium" FontSize="11" 
+                                     Foreground="#666" Margin="0,0,0,4"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" 
+                                     Text="{Binding AudioFileName}" 
+                                     FontSize="13" FontWeight="SemiBold" 
+                                     TextWrapping="Wrap"
+                                     Foreground="#2E7D32"/>
+                        </Grid>
+                    </Border>
+
+                    <!-- Large Load Button -->
+                    <Button Command="{Binding LoadAudioFileCommand}"
+                           Background="#4CAF50" BorderBrush="#4CAF50"
+                           Height="56" Margin="0,0,0,24" 
+                           Padding="20,0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#66BB6A"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="FolderMusic" Width="24" Height="24" 
+                                                   Margin="0,0,12,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="LOAD AUDIO FILE" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Configuration Card -->
+                    <Border Background="#F5F5F5" Padding="16" Margin="0,0,0,20">
+                        <StackPanel>
+                            <TextBlock Text="⚙️ Configuration" 
+                                     FontWeight="SemiBold" FontSize="14" 
+                                     Margin="0,0,0,16"/>
+
+                            <!-- Algorithm Selection -->
+                            <TextBlock Text="Interpolation Algorithm" 
+                                     FontSize="12" FontWeight="Medium" 
+                                     Margin="0,0,0,8"/>
+                            <ComboBox ItemsSource="{Binding AvailableAlgorithms}"
+                                     SelectedItem="{Binding SelectedAlgorithm}"
+                                     Style="{StaticResource ElegantComboBox}"
+                                     Margin="0,0,0,16"/>
+
+                            <!-- Threshold Slider with Modern Design -->
+                            <TextBlock Text="Noise Detection Threshold" 
+                                     FontSize="12" FontWeight="Medium" 
+                                     Margin="0,20,0,8"/>
+                            
+                            <Grid Margin="0,8,0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <!-- Slider -->
+                                <Slider Grid.Column="0" 
+                                       Value="{Binding NoiseThreshold}" 
+                                       Minimum="1.5" Maximum="5.0" 
+                                       TickFrequency="0.5"
+                                       Style="{StaticResource MaterialDesignSlider}"
+                                       Foreground="#00BCD4"/>
+                                
+                                <!-- Value Display -->
+                                <Border Grid.Column="1" 
+                                       Background="#00BCD4" 
+                                       Padding="12,6" 
+                                       Margin="12,0,0,0">
+                                    <TextBlock FontWeight="Bold" FontSize="14" 
+                                             Foreground="White">
+                                        <Run Text="{Binding NoiseThreshold, StringFormat='{}{0:F1}'}"/>
+                                        <Run Text="σ" FontSize="12"/>
+                                    </TextBlock>
+                                </Border>
+                            </Grid>
+
+                            <TextBlock Text="💡 Higher = more aggressive detection" 
+                                     FontSize="11" Foreground="#666" 
+                                     Margin="0,8,0,0" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Action Buttons with Icons -->
+                    <Button Command="{Binding ProcessAudioNoiseCommand}"
+                           IsEnabled="{Binding IsAudioLoaded}"
+                           Background="#2196F3" BorderBrush="#2196F3"
+                           Height="52" Margin="0,0,0,12" 
+                           Padding="20,0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="FontSize" Value="14"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#42A5F5"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.4"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="AutoFix" Width="22" Height="22" 
+                                                   Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="REMOVE NOISE" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Command="{Binding SaveAudioFileCommand}"
+                           IsEnabled="{Binding IsAudioLoaded}"
+                           Background="#FF9800" BorderBrush="#FF9800"
+                           Height="52" Margin="0,0,0,0" 
+                           Padding="20,0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="FontSize" Value="14"/>
+                                <Setter Property="FontWeight" Value="SemiBold"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FFA726"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.4"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ContentSave" Width="22" Height="22" 
+                                                   Margin="0,0,10,0" VerticalAlignment="Center"/>
+                            <TextBlock Text="SAVE PROCESSED AUDIO" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+    </materialDesign:Card>
+
+    <!-- RIGHT: Modern Info Panel with Steps -->
+    <materialDesign:Card Grid.Column="1" Margin="16,0,0,0" Style="{StaticResource ElegantCard}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="24">
+                <!-- How It Works Section -->
+                <TextBlock Text="How It Works" 
+                         Style="{StaticResource SectionHeader}"
+                         Margin="0,0,0,16"/>
+
+                <Border Background="#FFF3E0" Padding="20" Margin="0,0,0,24">
+                    <StackPanel>
+                        <TextBlock Text="💡 Audio Noise Removal via Interpolation" 
+                                 FontWeight="SemiBold" FontSize="15" Margin="0,0,0,12"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="13" LineHeight="22" Foreground="#555">
+                            This tool uses numerical interpolation to detect and remove outliers (noise spikes) from audio signals, producing cleaner sound without affecting the underlying audio quality.
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <!-- Process Flow with Colored Cards -->
+                <TextBlock Text="Process Flow" 
+                         Style="{StaticResource SubHeader}"
+                         Margin="0,0,0,12"/>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Step 1 -->
+                    <Border Grid.Row="0" Background="#E8F5E9" 
+                           Padding="16" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Border Grid.Column="0" Background="#4CAF50" 
+                                   Width="40" Height="40" 
+                                   Margin="0,0,16,0" VerticalAlignment="Top">
+                                <TextBlock Text="1" FontSize="18" FontWeight="Bold" 
+                                         Foreground="White" 
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="Load Audio File" 
+                                         FontWeight="SemiBold" FontSize="13" 
+                                         Margin="0,0,0,6"/>
+                                <TextBlock Text="Click 'LOAD AUDIO FILE' and select a WAV, MP3, FLAC, or AIFF file from your computer." 
+                                         TextWrapping="Wrap" FontSize="12" 
+                                         Foreground="#666" LineHeight="18"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Step 2 -->
+                    <Border Grid.Row="1" Background="#E3F2FD" 
+                           Padding="16" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Border Grid.Column="0" Background="#2196F3" 
+                                   Width="40" Height="40" 
+                                   Margin="0,0,16,0" VerticalAlignment="Top">
+                                <TextBlock Text="2" FontSize="18" FontWeight="Bold" 
+                                         Foreground="White" 
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="Configure Settings" 
+                                         FontWeight="SemiBold" FontSize="13" 
+                                         Margin="0,0,0,6"/>
+                                <TextBlock Text="Choose interpolation algorithm (Cubic Spline recommended) and adjust noise threshold. Start with 3.0σ and increase if needed." 
+                                         TextWrapping="Wrap" FontSize="12" 
+                                         Foreground="#666" LineHeight="18"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Step 3 -->
+                    <Border Grid.Row="2" Background="#FFF3E0" 
+                           Padding="16" Margin="0,0,0,12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Border Grid.Column="0" Background="#FF9800" 
+                                   Width="40" Height="40" 
+                                   Margin="0,0,16,0" VerticalAlignment="Top">
+                                <TextBlock Text="3" FontSize="18" FontWeight="Bold" 
+                                         Foreground="White" 
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="Process Audio" 
+                                         FontWeight="SemiBold" FontSize="13" 
+                                         Margin="0,0,0,6"/>
+                                <TextBlock Text="Click 'REMOVE NOISE' to detect and interpolate noisy samples. The algorithm will identify outliers and smooth them using surrounding data points." 
+                                         TextWrapping="Wrap" FontSize="12" 
+                                         Foreground="#666" LineHeight="18"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- Step 4 -->
+                    <Border Grid.Row="3" Background="#F3E5F5" 
+                           Padding="16" Margin="0,0,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            
+                            <Border Grid.Column="0" Background="#9C27B0" 
+                                   Width="40" Height="40" 
+                                   Margin="0,0,16,0" VerticalAlignment="Top">
+                                <TextBlock Text="4" FontSize="18" FontWeight="Bold" 
+                                         Foreground="White" 
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            
+                            <StackPanel Grid.Column="1">
+                                <TextBlock Text="Save Results" 
+                                         FontWeight="SemiBold" FontSize="13" 
+                                         Margin="0,0,0,6"/>
+                                <TextBlock Text="Save the processed audio as a WAV file to your desired location. The cleaned audio will maintain the original sample rate and quality." 
+                                         TextWrapping="Wrap" FontSize="12" 
+                                         Foreground="#666" LineHeight="18"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <Separator Margin="0,24"/>
+
+                <!-- Technical Details -->
+                <TextBlock Text="📊 Technical Details" 
+                         Style="{StaticResource SubHeader}"
+                         Margin="0,16,0,12"/>
+
+                <Border Background="#E8EAF6" Padding="20" Margin="0,0,0,16">
+                    <StackPanel>
+                        <TextBlock Text="Percentile-Based Detection" 
+                                 FontWeight="SemiBold" FontSize="13" 
+                                 Margin="0,0,0,8"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="12" 
+                                 LineHeight="20" Foreground="#555">
+                            Uses Q75 and Q90 percentiles to detect outliers. This method is more robust than standard deviation for audio signals with varying dynamics and prevents false positives in quiet sections.
+                        </TextBlock>
+                    </StackPanel>
+                </Border>
+
+                <!-- Key Features -->
+                <TextBlock Text="✨ Key Features" 
+                         Style="{StaticResource SubHeader}"
+                         Margin="0,8,0,12"/>
+
+                <UniformGrid Columns="3" Rows="1">
+                    <!-- Feature 1 -->
+                    <Border Background="#E8F5E9" Padding="16" Margin="0,0,8,0">
+                        <StackPanel>
+                            <materialDesign:PackIcon Kind="SpeedometerSlow" 
+                                                   Width="32" Height="32" 
+                                                   Foreground="#4CAF50" 
+                                                   Margin="0,0,0,8"/>
+                            <TextBlock Text="Fast Processing" 
+                                     FontWeight="SemiBold" FontSize="12" 
+                                     Margin="0,0,0,4"/>
+                            <TextBlock Text="Efficient algorithms for quick results" 
+                                     FontSize="11" Foreground="#666" 
+                                     TextWrapping="Wrap" LineHeight="16"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Feature 2 -->
+                    <Border Background="#E3F2FD" Padding="16" Margin="4,0">
+                        <StackPanel>
+                            <materialDesign:PackIcon Kind="SineWave" 
+                                                   Width="32" Height="32" 
+                                                   Foreground="#2196F3" 
+                                                   Margin="0,0,0,8"/>
+                            <TextBlock Text="Quality Preserved" 
+                                     FontWeight="SemiBold" FontSize="12" 
+                                     Margin="0,0,0,4"/>
+                            <TextBlock Text="No degradation of original audio" 
+                                     FontSize="11" Foreground="#666" 
+                                     TextWrapping="Wrap" LineHeight="16"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Feature 3 -->
+                    <Border Background="#FFF3E0" Padding="16" Margin="8,0,0,0">
+                        <StackPanel>
+                            <materialDesign:PackIcon Kind="CogOutline" 
+                                                   Width="32" Height="32" 
+                                                   Foreground="#FF9800" 
+                                                   Margin="0,0,0,8"/>
+                            <TextBlock Text="Customizable" 
+                                     FontWeight="SemiBold" FontSize="12" 
+                                     Margin="0,0,0,4"/>
+                            <TextBlock Text="Adjust threshold to your needs" 
+                                     FontSize="11" Foreground="#666" 
+                                     TextWrapping="Wrap" LineHeight="16"/>
+                        </StackPanel>
+                    </Border>
+                </UniformGrid>
+
+                <Separator Margin="0,24"/>
+
+                <!-- Supported Formats -->
+                <TextBlock Text="🎵 Supported Formats" 
+                         Style="{StaticResource SubHeader}"
+                         Margin="0,16,0,12"/>
+
+                <UniformGrid Columns="4" Rows="1">
+                    <Border Background="#F5F5F5" Padding="12,8" Margin="0,0,4,0">
+                        <TextBlock Text="WAV" FontWeight="SemiBold" FontSize="13" 
+                                 HorizontalAlignment="Center"/>
+                    </Border>
+                    <Border Background="#F5F5F5" Padding="12,8" Margin="2,0">
+                        <TextBlock Text="MP3" FontWeight="SemiBold" FontSize="13" 
+                                 HorizontalAlignment="Center"/>
+                    </Border>
+                    <Border Background="#F5F5F5" Padding="12,8" Margin="2,0">
+                        <TextBlock Text="FLAC" FontWeight="SemiBold" FontSize="13" 
+                                 HorizontalAlignment="Center"/>
+                    </Border>
+                    <Border Background="#F5F5F5" Padding="12,8" Margin="4,0,0,0">
+                        <TextBlock Text="AIFF" FontWeight="SemiBold" FontSize="13" 
+                                 HorizontalAlignment="Center"/>
+                    </Border>
+                </UniformGrid>
+            </StackPanel>
+        </ScrollViewer>
+    </materialDesign:Card>
+</Grid>
+
+            </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- STATUS BAR -->
+        <materialDesign:ColorZone Grid.Row="2" Mode="PrimaryLight" Padding="16,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="{Binding StatusMessage}" 
+                         VerticalAlignment="Center" FontSize="12"/>
+                
+                <TextBlock Grid.Column="1" Text="{Binding ErrorMessage}" 
+                         VerticalAlignment="Center" FontSize="12"
+                         Foreground="#F44336" FontWeight="Medium"
+                         Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+            </Grid>
+        </materialDesign:ColorZone>
+    </Grid>
+</Window>
