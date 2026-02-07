@@ -1,0 +1,41 @@
+# Escape=`
+
+# Stage 1: Build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-windowsservercore-ltsc2022 AS build
+WORKDIR /src
+
+# Copy solution and project files
+COPY InterpolationApp.sln .
+COPY InterpolationApp/InterpolationApp.csproj InterpolationApp/
+COPY AudioTestGenerator/AudioTestGenerator.csproj AudioTestGenerator/
+
+# Restore dependencies
+RUN dotnet restore InterpolationApp.sln
+
+# Copy all source code
+COPY . .
+
+# Build the application
+WORKDIR /src/InterpolationApp
+RUN dotnet build InterpolationApp.csproj -c Release -o /app/build
+
+# Stage 2: Publish
+FROM build AS publish
+RUN dotnet publish InterpolationApp.csproj -c Release -o /app/publish `
+    --no-restore --self-contained false
+
+# Stage 3: Runtime
+FROM mcr.microsoft.com/dotnet/runtime:8.0-windowsservercore-ltsc2022 AS runtime
+WORKDIR /app
+
+# Install .NET Desktop Runtime for WPF
+RUN powershell -Command `
+    Invoke-WebRequest -Uri https://dotnet.microsoft.com/download/dotnet/thank-you/runtime-desktop-8.0.0-windows-x64-installer -OutFile dotnet-desktop-runtime.exe; `
+    Start-Process dotnet-desktop-runtime.exe -ArgumentList '/quiet','/norestart' -Wait; `
+    Remove-Item dotnet-desktop-runtime.exe
+
+# Copy published application
+COPY --from=publish /app/publish .
+
+# Set entry point
+ENTRYPOINT ["InterpolationApp.exe"]

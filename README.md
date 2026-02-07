@@ -1,322 +1,352 @@
-# Advanced Interpolation Suite
+# 🚀 Advanced Interpolation Suite
 
-<div align="center">
+> Numerical interpolation algorithms implementation with WPF GUI and Docker support
 
-![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
-![.NET](https://img.shields.io/badge/.NET-512BD4?style=for-the-badge&logo=dotnet&logoColor=white)
-![WPF](https://img.shields.io/badge/WPF-0078D4?style=for-the-badge&logo=windows&logoColor=white)
+[![.NET](https://img.shields.io/badge/.NET-8.0-blue)](https://dotnet.microsoft.com/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue)](https://www.docker.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-**Professional numerical interpolation toolkit with audio processing capabilities**
+## 📋 Table of Contents
 
-Master's Thesis Project | Numerical Analysis | 2024-2025
-
-</div>
+- [Overview](#overview)
+- [Features](#features)
+- [Quick Start](#quick-start)
+  - [Option 1: Docker (Recommended)](#option-1-docker-recommended)
+  - [Option 2: Local Build](#option-2-local-build)
+- [Algorithms](#algorithms)
+- [Usage](#usage)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [License](#license)
 
 ---
 
 ## 🎯 Overview
 
-Advanced Interpolation Suite is a comprehensive WPF desktop application designed for numerical analysis and audio signal processing. The application implements five classical interpolation algorithms with real-time visualization, error analysis, and practical audio denoising capabilities.
+Advanced Interpolation Suite is a comprehensive numerical analysis application featuring multiple interpolation algorithms with a modern WPF desktop interface.
 
-### Key Features
+**Key Features:**
+- 5 interpolation algorithms (Linear, Lagrange, Newton, Hermite, Cubic Spline)
+- Function sampling with Chebyshev nodes
+- Polynomial degree optimizer
+- Audio noise removal
+- Real-time visualization with OxyPlot
+- Material Design UI
 
-- **5 Interpolation Algorithms**: Lagrange, Newton, Cubic Spline, Hermite, Linear
-- **Interactive Data Input**: Manual point entry with real-time plot updates
-- **Function Sampling**: Generate samples from mathematical expressions with Chebyshev/uniform node distribution
-- **Polynomial Degree Optimizer**: Automatically find optimal degree for target error threshold
-- **Audio Processing**: Vinyl crackle removal using interpolation-based noise detection
-- **Material Design UI**: Modern, professional interface with elegant visualizations
+---
+
+## ✨ Features
+
+### Interpolation Methods
+
+1. **Linear Interpolation** - Fast piecewise linear
+2. **Lagrange Interpolation** - Polynomial through all points
+3. **Newton Divided Differences** - Efficient polynomial evaluation
+4. **Hermite Interpolation** - C¹ continuous with derivatives
+5. **Cubic Spline** - C² continuous, smoothest curves
+
+### Additional Tools
+
+- Function sampling from mathematical expressions
+- Runge phenomenon demonstration
+- Polynomial degree optimization
+- Audio signal processing
+- Data export (CSV, PNG)
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### Option 1: Docker (Recommended)
 
-- **Windows 10/11** (64-bit)
-- **.NET 8.0 SDK** or later
-- **Visual Studio 2022** (recommended) or VS Code with C# extension
+**⚠️ Important:** This is a WPF desktop application. Docker support is **experimental** and has limitations for GUI applications.
 
-### Installation
+#### Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- Windows 10/11 (for Windows containers)
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/InterpolationMasterProject.git
-   cd InterpolationMasterProject/InterpolationApp
-   ```
+#### Run with Docker
 
-2. **Restore NuGet packages**
-   ```bash
-   dotnet restore
-   ```
+```bash
+# Clone repository
+git clone https://github.com/YOUR_USERNAME/advanced_interpolation_project.git
+cd advanced_interpolation_project
 
-3. **Build the project**
-   ```bash
-   dotnet build --configuration Release
-   ```
+# Build and run (Linux container - headless)
+docker-compose up -d
 
-4. **Run the application**
-   ```bash
-   dotnet run
-   ```
+# OR build manually
+docker build -t interpolation-app .
+docker run -it --rm interpolation-app
+```
+
+#### Windows Container (for full GUI support)
+
+```powershell
+# Switch Docker to Windows containers
+# Right-click Docker Desktop icon → "Switch to Windows containers..."
+
+# Build
+docker build -f Dockerfile.windows -t interpolation-app:windows .
+
+# Run
+docker run -it --name interpolation-app interpolation-app:windows
+```
+
+**Note:** GUI access in Windows containers requires additional RDP/VNC setup. See [DOCKER_GUIDE.md](DOCKER_GUIDE.md) for details.
 
 ---
 
-## 📚 Features in Detail
+### Option 2: Local Build (Full GUI Experience)
 
-### 1️⃣ Manual Input Mode
+#### Prerequisites
 
-Create custom datasets by manually entering data points or generating sample data.
+- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
+- Windows 10/11
+- Visual Studio 2022 (recommended) or VS Code
 
-**Features:**
-- Add/remove individual points
-- Generate random datasets
-- Load sample data (sine wave with noise)
-- Real-time interpolation visualization
-- Algorithm comparison with performance metrics (RMSE, Max Error, Computation Time)
+#### Steps
 
-**Supported Algorithms:**
-- **Lagrange Interpolation**: Global polynomial interpolation
-- **Newton Interpolation**: Divided differences approach
-- **Cubic Spline**: Piecewise cubic with C² continuity
-- **Hermite Interpolation**: Matches derivatives at nodes
-- **Linear Interpolation**: Simple piecewise linear
+```powershell
+# 1. Clone repository
+git clone https://github.com/YOUR_USERNAME/advanced_interpolation_project.git
+cd advanced_interpolation_project
 
-### 2️⃣ Function Sampling
+# 2. Restore NuGet packages
+dotnet restore
 
-Sample mathematical functions and analyze interpolation accuracy.
+# 3. Build solution
+dotnet build
 
-**Capabilities:**
-- Parse mathematical expressions: `sin(x)`, `x^2`, `exp(-x^2)`, `1/(1+25*x^2)` (Runge's function)
-- Chebyshev node distribution (minimizes Runge phenomenon)
-- Uniform node distribution
-- Compare interpolation error across all algorithms
-- Visualize real function vs interpolated curves
+# 4. Run application
+dotnet run --project InterpolationApp
 
-**Supported Functions:**
-- Trigonometric: `sin`, `cos`, `tan`
-- Exponential: `exp`, `log`, `ln`
-- Algebraic: `x^n`, `sqrt`, `abs`
-- Constants: `pi`, `e`
-
-### 3️⃣ Polynomial Degree Optimizer
-
-Automatically determine the minimum polynomial degree required for desired accuracy.
-
-**Workflow:**
-1. Define target function and interval
-2. Set target maximum error (ε)
-3. Specify search range for degree (n_min, n_max)
-4. Algorithm tests degrees incrementally and finds n_min where error ≤ ε
-
-**Output:**
-- Optimal degree n_min
-- Actual achieved error
-- Error vs degree plot (logarithmic scale)
-- Detailed analysis table
-
-### 4️⃣ Audio Processing (Vinyl Crackle Removal)
-
-Remove noise artifacts from audio recordings using numerical interpolation.
-
-**How It Works:**
-1. **Detection**: Uses derivative-based and amplitude-based outlier detection
-2. **Marking**: Identifies isolated spikes (clicks/pops) 2-5 samples wide
-3. **Interpolation**: Replaces noisy samples with interpolated values from clean neighbors
-4. **Reconstruction**: Preserves stereo/mono channel configuration
-
-**Supported Formats:**
-- WAV, MP3, FLAC, AIFF
-
-**Parameters:**
-- **Noise Threshold**: 1.5-5.0σ (lower = more aggressive)
-- **Algorithm**: Cubic Spline recommended for smooth audio
-
----
-
-## 🛠️ Technical Architecture
-
-### Technology Stack
-
-- **Framework**: .NET 8.0, WPF (Windows Presentation Foundation)
-- **UI Library**: MaterialDesignInXAML Toolkit 5.1.0
-- **Plotting**: OxyPlot.Wpf 2.2.0
-- **Audio Processing**: NAudio 2.2.1
-- **MVVM Toolkit**: CommunityToolkit.Mvvm 8.3.2
-
-### Project Structure
-
-```
-InterpolationApp/
-├── Algorithms/              # Core interpolation implementations
-│   ├── IInterpolationAlgorithm.cs
-│   ├── LagrangeInterpolation.cs
-│   ├── NewtonInterpolation.cs
-│   ├── CubicSplineInterpolation.cs
-│   ├── HermiteInterpolation.cs
-│   └── LinearInterpolation.cs
-├── Models/                  # Data models
-│   ├── DataPoint.cs
-│   └── InterpolationResult.cs
-├── Services/                # Business logic
-│   ├── AudioProcessingService.cs
-│   └── DataService.cs
-├── Helpers/                 # Utility classes
-│   ├── FunctionEvaluator.cs
-│   ├── PolynomialDegreeOptimizer.cs
-│   └── TestAudioGenerator.cs
-├── ViewModels/              # MVVM ViewModels
-│   ├── MainViewModel.cs
-│   └── Converters.cs
-├── Views/                   # WPF Views
-│   └── MainWindow.xaml
-└── App.xaml                 # Application entry point
-```
-
-### Key Design Patterns
-
-- **MVVM (Model-View-ViewModel)**: Clean separation of concerns
-- **Command Pattern**: User interactions via RelayCommand
-- **Strategy Pattern**: Pluggable interpolation algorithms via interface
-- **Observer Pattern**: Data binding with INotifyPropertyChanged
-
----
-
-## 📊 Algorithm Complexity
-
-| Algorithm | Time Complexity | Space Complexity | Smoothness |
-|-----------|----------------|------------------|------------|
-| Lagrange | O(n²) | O(n) | C⁰ (not smooth) |
-| Newton | O(n²) | O(n) | C⁰ (not smooth) |
-| Linear | O(n log n) | O(n) | C⁰ (piecewise) |
-| Hermite | O(n) | O(n) | C¹ (smooth) |
-| Cubic Spline | O(n) | O(n) | C² (very smooth) |
-
-**Recommendations:**
-- **Small datasets (<20 points)**: Lagrange or Newton
-- **Smooth curves required**: Cubic Spline
-- **Derivative matching**: Hermite
-- **Real-time performance**: Linear
-
----
-
-## 🧪 Testing & Examples
-
-### Example 1: Runge's Function
-
-```csharp
-Function: 1/(1+25*x^2)
-Interval: [-1, 1]
-Degree: 20
-Nodes: Chebyshev (recommended)
-
-Result: 
-- Uniform nodes → Runge phenomenon (oscillations)
-- Chebyshev nodes → Stable approximation
-```
-
-### Example 2: Vinyl Crackle Removal
-
-```
-Input: vintage_recording.wav (44.1kHz stereo)
-Algorithm: Cubic Spline
-Threshold: 3.0σ
-Detected: 1,247 clicks/pops (0.12% of samples)
-Result: Clean audio with preserved dynamics
+# OR open in Visual Studio
+start InterpolationApp.sln
 ```
 
 ---
 
-## 📖 Mathematical Background
+## 🧮 Algorithms
 
-### Lagrange Polynomial
+All algorithms are implemented from scratch without using external interpolation libraries.
 
-$$
-L(x) = \sum_{i=0}^{n} y_i \prod_{\substack{j=0 \\ j \neq i}}^{n} \frac{x - x_j}{x_i - x_j}
-$$
+### Linear Interpolation
+```
+y = y₀ + (y₁ - y₀) × (x - x₀) / (x₁ - x₀)
+```
+- **Complexity:** O(1) evaluation
+- **Continuity:** C⁰
+- **Best for:** Fast previews, simple data
+
+### Lagrange Interpolation
+```
+P(x) = Σ yᵢ × Lᵢ(x)
+where Lᵢ(x) = ∏(x - xⱼ) / (xᵢ - xⱼ) for j ≠ i
+```
+- **Complexity:** O(n²) evaluation
+- **Continuity:** C∞
+- **Best for:** Small datasets (n < 20)
 
 ### Newton Divided Differences
+```
+P(x) = f[x₀] + f[x₀,x₁](x-x₀) + f[x₀,x₁,x₂](x-x₀)(x-x₁) + ...
+```
+- **Complexity:** O(n²) preprocessing, O(n) evaluation
+- **Continuity:** C∞
+- **Best for:** Multiple evaluations
 
-$$
-N(x) = f[x_0] + \sum_{i=1}^{n} f[x_0, \ldots, x_i] \prod_{j=0}^{i-1} (x - x_j)
-$$
+### Hermite Interpolation
+```
+H(t) = h₀₀(t)·y₀ + h₁₀(t)·h·m₀ + h₀₁(t)·y₁ + h₁₁(t)·h·m₁
+```
+- **Complexity:** O(1) per segment
+- **Continuity:** C¹
+- **Best for:** Smooth curves with derivative info
 
-### Cubic Spline Conditions
-
-For interval $[x_i, x_{i+1}]$:
-- $S(x_i) = y_i$ (interpolation)
-- $S'(x_i^-)= S'(x_i^+)$ (C¹ continuity)
-- $S''(x_i^-) = S''(x_i^+)$ (C² continuity)
+### Cubic Spline (Natural)
+```
+Sᵢ(x) = aᵢ + bᵢ(x-xᵢ) + cᵢ(x-xᵢ)² + dᵢ(x-xᵢ)³
+```
+- **Complexity:** O(n) preprocessing, O(log n) evaluation
+- **Continuity:** C²
+- **Best for:** Smoothest visualization
 
 ---
 
-## 🐛 Known Issues & Limitations
+## 💻 Usage
 
-1. **Large Datasets**: Performance degrades with >1000 points (Lagrange/Newton)
-2. **Runge Phenomenon**: High-degree polynomials oscillate near edges (use Chebyshev nodes)
-3. **Audio Formats**: MP3/FLAC require external codecs on some systems
-4. **Memory Usage**: Large audio files (>100MB) may cause slowdowns
+### Manual Input Mode
+
+1. Launch application
+2. Navigate to **Manual Input** tab
+3. Add data points manually or load sample data
+4. Select interpolation algorithm
+5. Click **INTERPOLATE**
+
+### Function Sampling Mode
+
+1. Navigate to **Function Sampling** tab
+2. Enter mathematical expression (e.g., `sin(x)`, `1/(1+25*x^2)`)
+3. Set interval `[xMin, xMax]`
+4. Choose polynomial degree `n`
+5. Enable Chebyshev nodes (optional)
+6. Click **GENERATE & INTERPOLATE**
+
+### Degree Optimizer
+
+1. Navigate to **Degree Optimizer** tab
+2. Enter function and interval
+3. Set target maximum error `ε`
+4. Specify search range
+5. Click **FIND MINIMUM DEGREE**
+
+### Audio Processing
+
+1. Navigate to **Audio Processing** tab
+2. Click **LOAD AUDIO FILE** (WAV, MP3, FLAC, AIFF)
+3. Select interpolation algorithm
+4. Adjust noise detection threshold
+5. Click **REMOVE NOISE**
+6. Click **SAVE PROCESSED AUDIO**
+
+---
+
+## 📚 Documentation
+
+- [MATEMATICKA_VERIFIKACIJA.md](MATEMATICKA_VERIFIKACIJA.md) - Mathematical verification of algorithms
+- [VERIFIKACIJA_OPISA.md](VERIFIKACIJA_OPISA.md) - Implementation description verification
+- [DOCKER_README.md](DOCKER_README.md) - Docker quick start guide
+- [DOCKER_GUIDE.md](DOCKER_GUIDE.md) - Detailed Docker documentation
+- [API_PLAN.md](API_PLAN.md) - Web API implementation plan
+
+---
+
+## 🏗️ Project Structure
+
+```
+advanced_interpolation_project/
+├── InterpolationApp/           # Main WPF application
+│   ├── Algorithms/            # Interpolation implementations
+│   ├── ViewModels/            # MVVM view models
+│   ├── Views/                 # XAML views
+│   ├── Models/                # Data models
+│   ├── Services/              # Business logic
+│   └── Helpers/               # Utility classes
+├── AudioTestGenerator/         # Audio test file generator
+├── Dockerfile                  # Linux container
+├── Dockerfile.windows          # Windows container
+├── docker-compose.yml          # Multi-service orchestration
+└── docs/                       # Documentation
+
+```
+
+---
+
+## 🛠️ Built With
+
+- [.NET 8.0](https://dotnet.microsoft.com/) - Application framework
+- [WPF](https://docs.microsoft.com/en-us/dotnet/desktop/wpf/) - UI framework
+- [OxyPlot](https://oxyplot.github.io/) - Plotting library
+- [Material Design](https://github.com/MaterialDesignInXAML/MaterialDesignInXamlToolkit) - UI components
+- [NAudio](https://github.com/naudio/NAudio) - Audio processing
+- [MathNet.Numerics](https://numerics.mathdotnet.com/) - Mathematical functions
+
+---
+
+## 📊 NuGet Packages
+
+```xml
+<PackageReference Include="OxyPlot.Wpf" Version="2.1.2" />
+<PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+<PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+<PackageReference Include="NAudio" Version="2.2.1" />
+<PackageReference Include="MathNet.Numerics" Version="5.0.0" />
+<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
+```
+
+---
+
+## 🎓 Academic Use
+
+This project was developed as part of a Master's thesis in Numerical Analysis.
+
+**Features for academic demonstration:**
+- ✅ From-scratch implementation (no library interpolation functions)
+- ✅ Mathematical verification included
+- ✅ Algorithm comparison and benchmarking
+- ✅ Real-world application (audio processing)
+- ✅ Comprehensive documentation
+
+---
+
+## 🐛 Known Issues
+
+### Docker Limitations
+
+- **Linux containers:** Cannot run WPF GUI (headless mode only)
+- **Windows containers:** Require RDP/VNC for GUI access
+- **Recommendation:** Use local build for full GUI experience, or consider the Web API version (see [API_PLAN.md](API_PLAN.md))
+
+### Runge Phenomenon
+
+- Lagrange and Newton interpolations may exhibit oscillations for high-degree polynomials
+- **Solution:** Use Chebyshev nodes or Cubic Spline
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these guidelines:
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-**Code Style:**
-- Follow C# conventions (PascalCase for public members)
-- Add XML documentation comments
-- Include unit tests for new algorithms
 
 ---
 
-## 📄 License
+## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🎓 Academic Context
+## 👨‍💻 Author
 
-This project was developed as part of a Master's thesis in Numerical Analysis at the Faculty of Electrical Engineering, University of Sarajevo.
-
-**Thesis Title**: *Advanced Numerical Interpolation Methods with Applications in Audio Signal Processing*
-
-**Supervisor**: [Supervisor Name]
-
-**Year**: 2024-2025
-
----
-
-## 📧 Contact
-
-**Author**: Nejra Smajlović
-
-**University**: PTF UNZE, Software Engineering
-
-**Project Link**: [https://github.com/YOUR_USERNAME/InterpolationMasterProject](https://github.com/YOUR_USERNAME/InterpolationMasterProject)
+**Your Name**
+- GitHub: [@YOUR_USERNAME](https://github.com/YOUR_USERNAME)
+- Email: your.email@example.com
 
 ---
 
 ## 🙏 Acknowledgments
 
-- **MaterialDesignInXAML**: For the beautiful UI components
-- **OxyPlot**: For powerful plotting capabilities
-- **NAudio**: For robust audio processing
-- **Faculty of Electrical Engineering**: For academic support
+- Master's thesis advisor
+- Numerical Analysis course materials
+- .NET and WPF communities
+- Material Design contributors
 
 ---
 
-<div align="center">
+## 📞 Support
 
-**⭐ If you find this project useful, please consider giving it a star! ⭐**
+If you have questions or need help:
 
-Made with ❤️ for Numerical Analysis
+1. Check [Documentation](#documentation)
+2. Open an [Issue](https://github.com/YOUR_USERNAME/advanced_interpolation_project/issues)
+3. Contact the author
 
-</div>
+---
+
+## ⭐ Star History
+
+If you find this project useful, please consider giving it a star!
+
+[![Star History Chart](https://api.star-history.com/svg?repos=YOUR_USERNAME/advanced_interpolation_project&type=Date)](https://star-history.com/#YOUR_USERNAME/advanced_interpolation_project&Date)
+
+---
+
+**Made with ❤️ for Numerical Analysis**
