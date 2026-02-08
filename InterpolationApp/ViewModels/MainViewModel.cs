@@ -289,35 +289,24 @@ namespace InterpolationApp.ViewModels
         
         /// <summary>
         /// Parsira string u double, prihvatajući i zarez (,) i tačku (.) kao decimalni separator
+        /// FIXIRANO: Radi sa I zarezom I tačkom bez obzira na system kulturu!
         /// </summary>
         private double ParseFlexibleDouble(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
                 throw new FormatException("Input cannot be empty");
-                
-            // Prvo pokušaj sa trenutnom kulturom
-            if (double.TryParse(input, System.Globalization.NumberStyles.Any, 
-                System.Globalization.CultureInfo.CurrentCulture, out double result))
-            {
-                return result;
-            }
-
-            // Ako ne uspe, pokušaj sa invariant kulturom (tačka kao separator)
-            if (double.TryParse(input, System.Globalization.NumberStyles.Any, 
-                System.Globalization.CultureInfo.InvariantCulture, out result))
-            {
-                return result;
-            }
-
-            // Pokušaj zamijeniti separator i ponovo parsirati
-            string normalized = input.Replace(',', '.').Replace(" ", "");
+            
+            // Normalizuj input: zamijeni zarez sa tačkom i ukloni razmake
+            string normalized = input.Trim().Replace(',', '.').Replace(" ", "");
+            
+            // Parsira sa InvariantCulture (tačka kao separator)
             if (double.TryParse(normalized, System.Globalization.NumberStyles.Any, 
-                System.Globalization.CultureInfo.InvariantCulture, out result))
+                System.Globalization.CultureInfo.InvariantCulture, out double result))
             {
                 return result;
             }
 
-            throw new FormatException($"Cannot parse '{input}' as a number");
+            throw new FormatException($"Cannot parse '{input}' as a number. Use format: 2.5 or 2,5");
         }
         
         /// <summary>

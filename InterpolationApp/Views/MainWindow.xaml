@@ -4,7 +4,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:vm="clr-namespace:InterpolationApp.ViewModels"
-        Title="Advanced Interpolation Suite - Master Thesis" 
+        Title="PNMuSI - seminarski rad" 
         Height="900" Width="1600"
         Background="#FAFAFA"
         FontFamily="{materialDesign:MaterialDesignFont}"
@@ -33,9 +33,9 @@
                     <materialDesign:PackIcon Kind="ChartLine" Width="36" Height="36" 
                                            VerticalAlignment="Center" Margin="0,0,16,0"/>
                     <StackPanel VerticalAlignment="Center">
-                        <TextBlock Text="Advanced Interpolation Suite" 
+                        <TextBlock Text="PNMuSI - seminarski rad" 
                                  FontSize="22" FontWeight="SemiBold"/>
-                        <TextBlock Text="Numerička Analiza - Master Studij" 
+                        <TextBlock Text="Poslovna Inteligencija" 
                                  FontSize="12" Opacity="0.85"/>
                     </StackPanel>
                 </StackPanel>
