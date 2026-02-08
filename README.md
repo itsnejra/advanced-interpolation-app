@@ -276,7 +276,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- Master's thesis advisor
 - Numerical Analysis course materials
 - .NET and WPF communities
 - Material Design contributors
