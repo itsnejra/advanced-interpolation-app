@@ -57,54 +57,6 @@ Advanced Interpolation Suite is a comprehensive numerical analysis application f
 
 ## 🚀 Quick Start
 
-### Option 1: Docker (Recommended)
-
-**⚠️ Important:** This is a WPF desktop application. Docker support is **experimental** and has limitations for GUI applications.
-
-#### Prerequisites
-- [Docker Desktop](https://www.docker.com/products/docker-desktop)
-- Windows 10/11 (for Windows containers)
-
-#### Run with Docker
-
-```bash
-# Clone repository
-git clone https://github.com/YOUR_USERNAME/advanced_interpolation_project.git
-cd advanced_interpolation_project
-
-# Build and run (Linux container - headless)
-docker-compose up -d
-
-# OR build manually
-docker build -t interpolation-app .
-docker run -it --rm interpolation-app
-```
-
-#### Windows Container (for full GUI support)
-
-```powershell
-# Switch Docker to Windows containers
-# Right-click Docker Desktop icon → "Switch to Windows containers..."
-
-# Build
-docker build -f Dockerfile.windows -t interpolation-app:windows .
-
-# Run
-docker run -it --name interpolation-app interpolation-app:windows
-```
-
-**Note:** GUI access in Windows containers requires additional RDP/VNC setup. See [DOCKER_GUIDE.md](DOCKER_GUIDE.md) for details.
-
----
-
-### Option 2: Local Build (Full GUI Experience)
-
-#### Prerequisites
-
-- [.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)
-- Windows 10/11
-- Visual Studio 2022 (recommended) or VS Code
-
 #### Steps
 
 ```powershell
