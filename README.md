@@ -317,8 +317,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 Author
 
 **Your Name**
-- GitHub: [@YOUR_USERNAME](https://github.com/YOUR_USERNAME)
-- Email: your.email@example.com
+- GitHub: itsnejra
+- Email: nejra.smajlovic.22@size.ba
 
 ---
 
@@ -329,24 +329,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - .NET and WPF communities
 - Material Design contributors
 
----
 
-## 📞 Support
-
-If you have questions or need help:
-
-1. Check [Documentation](#documentation)
-2. Open an [Issue](https://github.com/YOUR_USERNAME/advanced_interpolation_project/issues)
-3. Contact the author
-
----
-
-## ⭐ Star History
-
-If you find this project useful, please consider giving it a star!
-
-[![Star History Chart](https://api.star-history.com/svg?repos=YOUR_USERNAME/advanced_interpolation_project&type=Date)](https://star-history.com/#YOUR_USERNAME/advanced_interpolation_project&Date)
-
----
 
 **Made with ❤️ for Numerical Analysis**
